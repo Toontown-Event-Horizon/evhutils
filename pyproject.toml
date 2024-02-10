@@ -1,0 +1,26 @@
+[project]
+name = "evh_utils"
+authors = [
+    {name = "Toontown: Event Horizon", email = "development@toontowneventhorizon.com"}
+]
+description = "A bunch of random game-related utilities"
+readme = "README.md"
+requires-python = ">=3.9"
+license = "MIT"
+classifiers = [
+    "License :: OSI Approved :: MIT License",
+    "Operating System :: OS Independent",
+    "Programming Language :: Python :: 3.9",
+]
+version = "1.1"
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build]
+exclude = ["/tests", "/examples"]
+sources = ["src"]
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/evh_utils"]
