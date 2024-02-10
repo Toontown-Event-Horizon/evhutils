@@ -1,4 +1,4 @@
-from bytestring_parser import BytestringParser, Packers, migration
+from evh_utils.BytestringParser import BytestringParser, Packers, migration
 
 
 ColorList = [

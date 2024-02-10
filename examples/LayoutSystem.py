@@ -3,7 +3,7 @@ from direct.gui.DirectButton import DirectButton
 from direct.gui.DirectFrame import DirectFrame
 from direct.showbase.ShowBase import ShowBase
 
-from layout_element import LayoutElement, AlignVector, Alignment, Direction, ArrangedElement
+from evh_utils.LayoutElement import LayoutElement, AlignVector, Alignment, Direction, ArrangedElement
 
 layout = LayoutElement(AlignVector.from_2d(Alignment.CENTER, Alignment.UP), direction=Direction.DOWN, padding=0.02)
 

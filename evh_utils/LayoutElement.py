@@ -103,13 +103,17 @@ class ArrangedElement:
 class LayoutElement(NodePath):
     layout_element_id = 0
 
-    def __init__(self, alignment: AlignVector, *, padding: float = 0, direction: Direction = Direction.RIGHT):
+    def __init__(self, alignment: AlignVector, padding: float = 0, direction: Direction = Direction.RIGHT):
         self.__class__.layout_element_id += 1
         super().__init__(f"layout-element-{self.layout_element_id}")
         self.padding = padding
         self.alignment = alignment
         self.direction = direction
         self.__items: dict[int, ArrangedElement] = {}
+
+    @property
+    def itemCount(self):
+        return len(self.__items)
 
     def add(self, *items: ArrangedElement, redraw: bool = True):
         for item in items:
