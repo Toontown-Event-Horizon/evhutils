@@ -103,9 +103,11 @@ class ArrangedElement:
 class LayoutElement(NodePath):
     layout_element_id = 0
 
-    def __init__(self, alignment: AlignVector, padding: float = 0, direction: Direction = Direction.RIGHT):
+    def __init__(self, parent: NodePath, alignment: AlignVector, pos: Vec3 = Vec3(0, 0, 0), padding: float = 0, direction: Direction = Direction.RIGHT):
         self.__class__.layout_element_id += 1
         super().__init__(f"layout-element-{self.layout_element_id}")
+        self.reparentTo(parent)
+        self.setPos(pos)
         self.padding = padding
         self.alignment = alignment
         self.direction = direction
@@ -114,6 +116,16 @@ class LayoutElement(NodePath):
     @property
     def itemCount(self):
         return len(self.__items)
+
+    @property
+    def __lengths(self):
+        return [node.sizes[self.direction.axis] for node in self.__itemList]
+
+    @property
+    def __itemList(self):
+        if self.direction.is_reverse:
+            return list(reversed(self.__items.values()))
+        return list(self.__items.values())
 
     def add(self, *items: ArrangedElement, redraw: bool = True):
         for item in items:
@@ -132,15 +144,16 @@ class LayoutElement(NodePath):
             self.redraw()
 
     def redraw(self):
-        axis = self.direction.axis
+        totalLength = self.getTotalLength()
+        nodes = self.__itemList
+        lengths = self.__lengths
 
-        nodes = list(self.__items.values())
-        if self.direction.is_reverse:
-            nodes = list(reversed(nodes))
-        lengths = [node.sizes[axis] for node in nodes]
-        totalLength = sum(lengths) + self.padding * (len(lengths) - 1)
         priorDistance = 0
         for node, length in zip(nodes, lengths):
-            pos = node.position(axis, totalLength, self.alignment, priorDistance)
+            pos = node.position(self.direction.axis, totalLength, self.alignment, priorDistance)
             node.node.setPos(pos)
             priorDistance += length + self.padding
+
+    def getTotalLength(self):
+        lengths = self.__lengths
+        return sum(lengths) + self.padding * (len(lengths) - 1)
