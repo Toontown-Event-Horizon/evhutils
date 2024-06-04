@@ -100,7 +100,13 @@ class Migration:
 
 
 def migration(
-    func=None, *, fromVersion: int = -1, convertedField: str = "", added: bool = False, removed: bool = False, locatedAfter: str = ""
+    func=None,
+    *,
+    fromVersion: int = -1,
+    convertedField: str = "",
+    added: bool = False,
+    removed: bool = False,
+    locatedAfter: str = "",
 ):
     if added and removed:
         raise ValueError("A migration field cannot be both added and removed at the same time!")

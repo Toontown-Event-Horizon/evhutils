@@ -1,6 +1,8 @@
 import dataclasses
 from enum import Enum, auto
 
+from direct.actor.Actor import Actor
+from direct.gui.DirectGuiBase import DirectGuiWidget
 from panda3d.core import NodePath, Vec3
 
 
@@ -99,11 +101,26 @@ class ArrangedElement:
             pos.z = shifts.z * totalSize + priorDistance - self.bottom
         return pos
 
+    def destroy(self):
+        if isinstance(self.node, DirectGuiWidget):
+            self.node.destroy()
+        elif isinstance(self.node, Actor):
+            self.node.cleanup()
+        else:
+            self.node.removeNode()
+
 
 class LayoutElement(NodePath):
     layout_element_id = 0
 
-    def __init__(self, parent: NodePath, alignment: AlignVector, pos: Vec3 = Vec3(0, 0, 0), padding: float = 0, direction: Direction = Direction.RIGHT):
+    def __init__(
+        self,
+        parent: NodePath,
+        alignment: AlignVector,
+        pos: Vec3 = Vec3(0, 0, 0),
+        padding: float = 0,
+        direction: Direction = Direction.RIGHT,
+    ):
         self.__class__.layout_element_id += 1
         super().__init__(f"layout-element-{self.layout_element_id}")
         self.reparentTo(parent)
