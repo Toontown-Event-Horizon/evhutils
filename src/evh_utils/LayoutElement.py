@@ -136,10 +136,10 @@ class LayoutElement(NodePath):
 
     @property
     def __lengths(self):
-        return [node.sizes[self.direction.axis] for node in self.__itemList]
+        return [node.sizes[self.direction.axis] for node in self.itemList]
 
     @property
-    def __itemList(self):
+    def itemList(self):
         if self.direction.is_reverse:
             return list(reversed(self.__items.values()))
         return list(self.__items.values())
@@ -162,7 +162,7 @@ class LayoutElement(NodePath):
 
     def redraw(self):
         totalLength = self.getTotalLength()
-        nodes = self.__itemList
+        nodes = self.itemList
         lengths = self.__lengths
 
         priorDistance = 0
